@@ -12,9 +12,7 @@ Hybrid C and Python workspace for numerical experiments.
 
 ## Quick Start
 
-1. Create Python environment:
-   ./scripts/bootstrap.sh
-2. Build C examples:
+1. Build C examples:
    cmake --preset debug
    cmake --build --preset debug
 
