@@ -14,17 +14,18 @@ Vector vector_create(size_t size) {
     return vector;
 }
 
-int main(){
-    Vector vector = vector_create(3);
-    if (vector.data == NULL) {
-        return 1;
-    }
-
-    double input[] = {1.0, 3.0, 7.0};
-
+Vector vector_from_array(const double *data, size_t size) {
+    Vector vector = vector_create(size);
     for (size_t i = 0; i < vector.size; i++) {
-        vector.data[i] = input[i];
+        vector.data[i] = data[i];
     }
+    return vector;
+}
+
+int main(){
+    size_t size = 3;
+    double input[] = {1.0, 3.0, 7.0};
+    Vector vector = vector_from_array(input, size);
 
     for (size_t i = 0; i < vector.size; i++) {
         printf("%f\n", vector.data[i]);
