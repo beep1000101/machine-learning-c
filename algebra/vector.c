@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct{
+typedef struct {
     size_t size;
-    double* data;
+    double *data;
 } Vector;
 
 void print_vector(Vector vector) {
@@ -34,7 +34,7 @@ void free_vector(Vector vector) {
 
 Vector scalar_mul(Vector vector, int scalar) {
     Vector result = vector_create(vector.size);
-    for (size_t i = 0; i < vector.size; i++){
+    for (size_t i = 0; i < vector.size; i++) {
         result.data[i] = vector.data[i] * scalar;
     }
     return result;
@@ -42,7 +42,7 @@ Vector scalar_mul(Vector vector, int scalar) {
 
 Vector add_vector(Vector vector_left, Vector vector_right) {
     Vector result = vector_create(vector_left.size);
-    for (size_t i = 0; i < vector_left.size; i++){
+    for (size_t i = 0; i < vector_left.size; i++) {
         result.data[i] = vector_left.data[i] + vector_right.data[i];
     }
 
@@ -51,7 +51,7 @@ Vector add_vector(Vector vector_left, Vector vector_right) {
 
 Vector sub_vector(Vector vector_left, Vector vector_right) {
     Vector result = vector_create(vector_left.size);
-    for (size_t i = 0; i < vector_left.size; i++){
+    for (size_t i = 0; i < vector_left.size; i++) {
         result.data[i] = vector_left.data[i] - vector_right.data[i];
     }
 
@@ -60,13 +60,13 @@ Vector sub_vector(Vector vector_left, Vector vector_right) {
 
 double dot(Vector vector_left, Vector vector_right) {
     double result = 0;
-    for (size_t i = 0; i < vector_left.size; i++){
+    for (size_t i = 0; i < vector_left.size; i++) {
         result += vector_left.data[i] * vector_right.data[i];
     }
     return result;
 }
 
-int main(){
+int main() {
     int scalar = 3;
     size_t size = 3;
     double input1[] = {1.0, 3.0, 7.0};
@@ -84,7 +84,6 @@ int main(){
     print_vector(scalar_multiplied_vector);
     printf("vector1 dot vector2\n");
     printf("%f\n", dot_product);
-
 
     free_vector(vector1);
     free_vector(vector2);
