@@ -34,7 +34,7 @@ void free_vector(Vector vector) {
 
 Vector scalar_mul(Vector vector, int scalar) {
     Vector result = vector_create(vector.size);
-    for (int i = 0; i < vector.size; i++){
+    for (size_t i = 0; i < vector.size; i++){
         result.data[i] = vector.data[i] * scalar;
     }
     return result;
@@ -42,7 +42,7 @@ Vector scalar_mul(Vector vector, int scalar) {
 
 Vector add_vector(Vector vector_left, Vector vector_right) {
     Vector result = vector_create(vector_left.size);
-    for (int i = 0; i < vector_left.size; i++){
+    for (size_t i = 0; i < vector_left.size; i++){
         result.data[i] = vector_left.data[i] + vector_right.data[i];
     }
 
@@ -51,7 +51,7 @@ Vector add_vector(Vector vector_left, Vector vector_right) {
 
 Vector sub_vector(Vector vector_left, Vector vector_right) {
     Vector result = vector_create(vector_left.size);
-    for (int i = 0; i < vector_left.size; i++){
+    for (size_t i = 0; i < vector_left.size; i++){
         result.data[i] = vector_left.data[i] - vector_right.data[i];
     }
 
@@ -60,7 +60,7 @@ Vector sub_vector(Vector vector_left, Vector vector_right) {
 
 double dot(Vector vector_left, Vector vector_right) {
     double result = 0;
-    for (int i = 0; i < vector_left.size; i++){
+    for (size_t i = 0; i < vector_left.size; i++){
         result += vector_left.data[i] * vector_right.data[i];
     }
     return result;
