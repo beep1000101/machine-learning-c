@@ -32,10 +32,10 @@ void free_vector(Vector vector) {
     free(vector.data);
 }
 
-Vector scalar_mul(Vector vector, int scalar) {
-    Vector result = vector_create(vector.size);
-    for (size_t i = 0; i < vector.size; i++) {
-        result.data[i] = vector.data[i] * scalar;
+Vector scalar_mul(Vector *vector, int scalar) {
+    Vector result = vector_create(vector->size);
+    for (size_t i = 0; i < vector->size; i++) {
+        result.data[i] = vector->data[i] * scalar;
     }
     return result;
 }
@@ -49,19 +49,19 @@ Vector add_vector(Vector *vector_left, Vector *vector_right) {
     return result;
 }
 
-Vector sub_vector(Vector vector_left, Vector vector_right) {
-    Vector result = vector_create(vector_left.size);
-    for (size_t i = 0; i < vector_left.size; i++) {
-        result.data[i] = vector_left.data[i] - vector_right.data[i];
+Vector sub_vector(Vector *vector_left, Vector *vector_right) {
+    Vector result = vector_create(vector_left->size);
+    for (size_t i = 0; i < vector_left->size; i++) {
+        result.data[i] = vector_left->data[i] - vector_right->data[i];
     }
 
     return result;
 }
 
-double dot(Vector vector_left, Vector vector_right) {
+double dot(Vector *vector_left, Vector *vector_right) {
     double result = 0;
-    for (size_t i = 0; i < vector_left.size; i++) {
-        result += vector_left.data[i] * vector_right.data[i];
+    for (size_t i = 0; i < vector_left->size; i++) {
+        result += vector_left->data[i] * vector_right->data[i];
     }
     return result;
 }
@@ -75,8 +75,8 @@ int main() {
     Vector vector2 = vector_from_array(input2, size);
 
     Vector sum_of_vectors = add_vector(&vector1, &vector2);
-    Vector scalar_multiplied_vector = scalar_mul(vector1, scalar);
-    double dot_product = dot(vector1, vector2);
+    Vector scalar_multiplied_vector = scalar_mul(&vector1, scalar);
+    double dot_product = dot(&vector1, &vector2);
 
     printf("sum of vectors:\n");
     print_vector(sum_of_vectors);
