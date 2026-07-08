@@ -8,7 +8,7 @@ Hybrid C and Python workspace for numerical experiments.
 - src/python/: Python package and wrappers
 - examples/: C example executables
 - tests/: test code (C and Python)
-- scripts/: developer bootstrap and utility scripts
+- scripts/: it's just scripts bruh
 
 ## Quick Start
 
