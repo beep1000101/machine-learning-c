@@ -63,3 +63,20 @@ compile_commands.json
 # Local debug/release binaries produced in this repo
 *_dbg
 *.bin
+
+# Build outputs
+build/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# Python environment and cache
+.venv/
+__pycache__/
+.pytest_cache/
+*.pyc
+
+# Packaging outputs
+dist/
+*.egg-info/
