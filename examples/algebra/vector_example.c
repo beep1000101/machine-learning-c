@@ -16,6 +16,7 @@ int main(void) {
     double dot_product = dot(&vector1, &vector2);
     double vector1_norm = norm(&vector1);
     double vector2_norm = norm(&vector2);
+    double vector12_cosine = cosine_similarity(&vector1, &vector2);
 
     printf("sum of vectors:\n");
     print_vector(&sum_of_vectors);
@@ -27,6 +28,8 @@ int main(void) {
     printf("%f\n", vector1_norm);
     printf("Norm of vector2:\n");
     printf("%f\n", vector2_norm);
+    printf("Cosine similarity vector1 and vector2:\n");
+    printf("%f\n", vector12_cosine);
 
     free_vector(&vector1);
     free_vector(&vector2);

@@ -124,3 +124,11 @@ double norm(const Vector *vector) {
     double norm = sqrt(sum_of_squares);
     return norm;
 }
+
+double cosine_similarity(const Vector *vector_left, const Vector *vector_right) {
+    double dot_product = dot(vector_left, vector_right);
+    double norm_left = norm(vector_left);
+    double norm_right = norm(vector_right);
+    double cosine_similarity = dot_product / (norm_left * norm_right);
+    return cosine_similarity;
+}
