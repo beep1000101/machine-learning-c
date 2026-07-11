@@ -1,5 +1,6 @@
 #include "algebra/vector.h"
 
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -113,4 +114,13 @@ double dot(const Vector *vector_left, const Vector *vector_right) {
         result += vector_left->data[i] * vector_right->data[i];
     }
     return result;
+}
+
+double norm(const Vector *vector) {
+    double sum_of_squares = 0;
+    for (size_t i = 0; i < vector->size; i++) {
+        sum_of_squares += vector->data[i] * vector->data[i];
+    }
+    double norm = sqrt(sum_of_squares);
+    return norm;
 }

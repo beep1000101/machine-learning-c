@@ -14,6 +14,8 @@ int main(void) {
     Vector sum_of_vectors = add_vector(&vector1, &vector2);
     Vector scalar_multiplied_vector = scalar_mul(&vector1, scalar);
     double dot_product = dot(&vector1, &vector2);
+    double vector1_norm = norm(&vector1);
+    double vector2_norm = norm(&vector2);
 
     printf("sum of vectors:\n");
     print_vector(&sum_of_vectors);
@@ -21,6 +23,10 @@ int main(void) {
     print_vector(&scalar_multiplied_vector);
     printf("vector1 dot vector2\n");
     printf("%f\n", dot_product);
+    printf("Norm of vector1:\n");
+    printf("%f\n", vector1_norm);
+    printf("Norm of vector2:\n");
+    printf("%f\n", vector2_norm);
 
     free_vector(&vector1);
     free_vector(&vector2);

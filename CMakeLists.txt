@@ -15,6 +15,7 @@ target_include_directories(algebra_core
     PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/src/c/include
 )
+target_link_libraries(algebra_core PUBLIC m)
 
 add_subdirectory(examples)
 

@@ -16,5 +16,6 @@ Vector scalar_mul(const Vector *vector, int scalar);
 Vector add_vector(const Vector *vector_left, const Vector *vector_right);
 Vector sub_vector(const Vector *vector_left, const Vector *vector_right);
 double dot(const Vector *vector_left, const Vector *vector_right);
+double norm(const Vector *vector);
 
 #endif
