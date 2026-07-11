@@ -143,7 +143,7 @@ double matrix_determinant(const Matrix *matrix) {
         double a0c = *get_matrix_element_const(matrix, 0, col);
         determinant += sign * a0c * matrix_determinant(&minor);
 
-        free(minor.data);
+        matrix_destroy(&minor);
     }
 
     return determinant;
