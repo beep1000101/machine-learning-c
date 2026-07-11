@@ -2,6 +2,18 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Debug Active C File Only (gdb)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${fileDirname}/${fileBasenameNoExtension}_dbg",
+            "cwd": "${fileDirname}",
+            "MIMode": "gdb",
+            "miDebuggerPath": "/usr/bin/gdb",
+            "preLaunchTask": "Build active C file only (debug)",
+            "stopAtEntry": false,
+            "externalConsole": false
+        },
+        {
             "name": "Debug CMake Launch Target (gdb)",
             "type": "cppdbg",
             "request": "launch",
