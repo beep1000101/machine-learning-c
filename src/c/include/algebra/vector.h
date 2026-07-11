@@ -84,7 +84,7 @@ double dot(const Vector *vector_left, const Vector *vector_right);
  * @brief Compute the Euclidean norm (L2) of a vector.
  *
  * @param vector Input vector.
- * @return Euclidean norm.
+ * @return Euclidean norm, or 0.0 if input is invalid.
  */
 double norm(const Vector *vector);
 
@@ -93,7 +93,8 @@ double norm(const Vector *vector);
  *
  * @param vector_left Left input vector.
  * @param vector_right Right input vector.
- * @return Cosine similarity in [-1, 1] for valid non-zero vectors.
+ * @return Cosine similarity in [-1, 1] for valid non-zero vectors,
+ *         or 0.0 if inputs are invalid or have zero norm.
  */
 double cosine_similarity(const Vector *vector_left, const Vector *vector_right);
 

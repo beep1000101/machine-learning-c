@@ -117,18 +117,25 @@ double dot(const Vector *vector_left, const Vector *vector_right) {
 }
 
 double norm(const Vector *vector) {
-    double sum_of_squares = 0;
+    if (vector == NULL || vector->data == NULL) {
+        return 0.0;
+    }
+
+    double sum_of_squares = 0.0;
     for (size_t i = 0; i < vector->size; i++) {
         sum_of_squares += vector->data[i] * vector->data[i];
     }
-    double norm = sqrt(sum_of_squares);
-    return norm;
+    return sqrt(sum_of_squares);
 }
 
 double cosine_similarity(const Vector *vector_left, const Vector *vector_right) {
-    double dot_product = dot(vector_left, vector_right);
     double norm_left = norm(vector_left);
     double norm_right = norm(vector_right);
-    double cosine_similarity = dot_product / (norm_left * norm_right);
-    return cosine_similarity;
+    double denominator = norm_left * norm_right;
+
+    if (denominator == 0.0) {
+        return 0.0;
+    }
+
+    return dot(vector_left, vector_right) / denominator;
 }
