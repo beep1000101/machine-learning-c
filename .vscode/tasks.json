@@ -2,18 +2,22 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Build active C file (debug)",
+            "label": "CMake configure (debug)",
             "type": "shell",
-            "command": "gcc",
+            "command": "cmake",
             "args": [
-                "-g",
-                "-O0",
-                "-Wall",
-                "-Wextra",
-                "-I${workspaceFolder}/src/c/include",
-                "${file}",
-                "-o",
-                "${fileDirname}/${fileBasenameNoExtension}_dbg"
+                "--preset",
+                "debug"
+            ]
+        },
+        {
+            "label": "CMake build (debug)",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "--preset",
+                "debug"
             ],
             "group": {
                 "kind": "build",
@@ -21,6 +25,13 @@
             },
             "problemMatcher": [
                 "$gcc"
+            ]
+        },
+        {
+            "label": "CMake configure + build (debug)",
+            "dependsOn": [
+                "CMake configure (debug)",
+                "CMake build (debug)"
             ]
         }
     ]

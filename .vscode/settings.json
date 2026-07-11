@@ -1,6 +1,10 @@
 {
     "editor.formatOnSave": true,
     "C_Cpp.formatting": "clangFormat",
+    "cmake.useCMakePresets": "always",
+    "cmake.configureOnOpen": true,
+    "cmake.defaultBuildPreset": "debug",
+    "cmake.defaultLaunchTarget": "dot_product_example",
     "[c]": {
         "editor.defaultFormatter": "ms-vscode.cpptools"
     },
