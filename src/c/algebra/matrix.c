@@ -48,20 +48,36 @@ Matrix transpose(const Matrix *matrix) {
     return transposed_matrix;
 }
 
+double determinant_two_by_two(const Matrix *matrix) {
+    double determinant = (*get_matrix_element(matrix, 0, 0)) * (*get_matrix_element(matrix, 1, 1)) -
+                         (*get_matrix_element(matrix, 1, 0)) * (*get_matrix_element(matrix, 0, 1));
+    return determinant;
+}
+
 int main(void) {
     size_t n_rows = 3;
     size_t n_columns = 3;
     double data[3][3] = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
     const double *flat_data = &data[0][0];
+    double two_by_two[2][2] = {{1, 2}, {4, 5}};
+    const double *flat_two_by_two = &two_by_two[0][0];
 
     Matrix matrix = matrix_from_array(flat_data, n_rows, n_columns);
+    Matrix two_by_two_matrix = matrix_from_array(flat_two_by_two, 2, 2);
+    Matrix transposed_matrix = transpose(&matrix);
+    double two_by_two_determinant = determinant_two_by_two(&two_by_two_matrix);
+
     printf("Matrix:\n");
     print_matrix(&matrix);
-    Matrix transposed_matrix = transpose(&matrix);
     printf("Transposed Matrix:\n");
     print_matrix(&transposed_matrix);
+    printf("2x2 Matrix:\n");
+    print_matrix(&two_by_two_matrix);
+    printf("2x2 Matrix determinant:\n");
+    printf("%f", two_by_two_determinant);
 
     free(matrix.data);
+    free(two_by_two_matrix.data);
     free(transposed_matrix.data);
 
     return 0;
