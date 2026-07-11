@@ -11,10 +11,14 @@ double *get_matrix_element(Matrix *matrix, size_t row, size_t column) {
     return matrix->data + row * matrix->n_columns + column;
 }
 
-void print_matrix(Matrix *matrix) {
+const double *get_matrix_element_const(const Matrix *matrix, size_t row, size_t column) {
+    return matrix->data + row * matrix->n_columns + column;
+}
+
+void print_matrix(const Matrix *matrix) {
     for (size_t i = 0; i < matrix->n_rows; i++) {
         for (size_t j = 0; j < matrix->n_columns; j++) {
-            double *matrix_element = get_matrix_element(matrix, i, j);
+            const double *matrix_element = get_matrix_element_const(matrix, i, j);
             printf("%f ", *matrix_element);
         }
         printf("\n");
@@ -24,11 +28,19 @@ void print_matrix(Matrix *matrix) {
 Matrix create_matrix(size_t n_rows, size_t n_columns) {
     Matrix matrix = {.n_rows = n_rows, .n_columns = n_columns};
     matrix.data = malloc(matrix.n_rows * matrix.n_columns * sizeof(double));
+    if (matrix.data == NULL) {
+        matrix.n_rows = 0;
+        matrix.n_columns = 0;
+    }
     return matrix;
 }
 
 Matrix matrix_from_array(const double *flat_data, size_t n_rows, size_t n_columns) {
     Matrix matrix = create_matrix(n_rows, n_columns);
+    if (matrix.data == NULL || flat_data == NULL) {
+        return matrix;
+    }
+
     for (size_t i = 0; i < matrix.n_rows; i++) {
         for (size_t j = 0; j < matrix.n_columns; j++) {
             matrix.data[i * matrix.n_columns + j] = flat_data[i * matrix.n_columns + j];
@@ -39,6 +51,10 @@ Matrix matrix_from_array(const double *flat_data, size_t n_rows, size_t n_column
 
 Matrix transpose(const Matrix *matrix) {
     Matrix transposed_matrix = create_matrix(matrix->n_columns, matrix->n_rows);
+    if (transposed_matrix.data == NULL || matrix == NULL || matrix->data == NULL) {
+        return transposed_matrix;
+    }
+
     for (size_t i = 0; i < transposed_matrix.n_rows; i++) {
         for (size_t j = 0; j < transposed_matrix.n_columns; j++) {
             transposed_matrix.data[j * transposed_matrix.n_rows + i] =
@@ -49,8 +65,13 @@ Matrix transpose(const Matrix *matrix) {
 }
 
 double determinant_two_by_two(const Matrix *matrix) {
-    double determinant = (*get_matrix_element(matrix, 0, 0)) * (*get_matrix_element(matrix, 1, 1)) -
-                         (*get_matrix_element(matrix, 1, 0)) * (*get_matrix_element(matrix, 0, 1));
+    if (matrix == NULL || matrix->data == NULL || matrix->n_rows != 2 || matrix->n_columns != 2) {
+        return 0.0;
+    }
+
+    double determinant =
+        (*get_matrix_element_const(matrix, 0, 0)) * (*get_matrix_element_const(matrix, 1, 1)) -
+        (*get_matrix_element_const(matrix, 1, 0)) * (*get_matrix_element_const(matrix, 0, 1));
     return determinant;
 }
 
@@ -74,7 +95,7 @@ int main(void) {
     printf("2x2 Matrix:\n");
     print_matrix(&two_by_two_matrix);
     printf("2x2 Matrix determinant:\n");
-    printf("%f", two_by_two_determinant);
+    printf("%f\n", two_by_two_determinant);
 
     free(matrix.data);
     free(two_by_two_matrix.data);
