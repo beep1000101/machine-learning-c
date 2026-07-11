@@ -6,6 +6,8 @@
 - Presets: `CMakePresets.json`
 - Example targets: `examples/CMakeLists.txt` and `examples/algebra/CMakeLists.txt`
 - Core C library target: `algebra_core`
+- VS Code debug launcher: `.vscode/launch.json` using CMake Tools launch target path
+- VS Code build tasks: `.vscode/tasks.json` using CMake preset configure/build pipeline
 
 ## Target Structure
 
@@ -71,12 +73,50 @@ cmake --build /home/matt/dev/machine-learning-c/build/debug --target vector_exam
 
 ## VS Code Task Note
 
-`/.vscode/tasks.json` builds the currently open C file with:
+`/.vscode/tasks.json` runs a CMake-first pipeline:
 
-- `-g -O0 -Wall -Wextra`
-- `-I${workspaceFolder}/src/c/include`
+- `CMake configure (debug)` -> `cmake --preset debug`
+- `CMake build (debug)` -> `cmake --build --preset debug`
+- `CMake configure + build (debug)` chains both tasks
 
-This is convenient for quick single-file builds. For project targets and linking, prefer CMake.
+`/.vscode/launch.json` uses one launch config:
+
+- `program`: `${command:cmake.launchTargetPath}`
+- `cwd`: `${command:cmake.launchTargetDirectory}`
+- `preLaunchTask`: `CMake configure + build (debug)`
+
+This gives a single F5 workflow: configure, build, link dependencies, then debug selected launch target.
+
+`/.vscode/settings.json` controls default launch target behavior:
+
+- `cmake.defaultLaunchTarget` can pin F5 to one executable (for example `dot_product_example`).
+- If omitted, F5 uses the currently selected CMake launch/debug target.
+
+## Adding New Examples
+
+Will it discover other examples automatically?
+
+- Partly.
+- CMake and CMake Tools only discover executables that are declared as CMake targets.
+
+Required steps for a new example:
+
+1. Add the new source file (for example `examples/algebra/new_example.c`).
+2. Register it in `examples/algebra/CMakeLists.txt` with `add_executable(new_example new_example.c)`.
+3. Link dependencies if needed, for example `target_link_libraries(new_example PRIVATE algebra_core)`.
+4. Reconfigure/build (`cmake --preset debug`, `cmake --build --preset debug`) or press F5.
+
+After that, CMake Tools can launch/debug the new target.
+
+## Discovery Model (Why It Works)
+
+Target discovery is based on the CMakeLists hierarchy, not on scanning files:
+
+1. `CMakeLists.txt` includes `examples/` via `add_subdirectory(examples)`.
+2. `examples/CMakeLists.txt` includes `examples/algebra/` via `add_subdirectory(algebra)`.
+3. `examples/algebra/CMakeLists.txt` declares launchable executables with `add_executable(...)`.
+
+Only targets declared this way are visible to CMake Tools as launch/debug targets.
 
 ## Troubleshooting
 
@@ -88,3 +128,7 @@ This is convenient for quick single-file builds. For project targets and linking
 
 3. `undefined reference` linker errors
 - The source/library providing symbols was not linked (use CMake target or include `src/c/algebra/vector.c` in manual compile).
+
+4. F5 always launches the same executable
+- Check `cmake.defaultLaunchTarget` in `/.vscode/settings.json`.
+- Remove it if you want F5 to follow your currently selected CMake launch target.
