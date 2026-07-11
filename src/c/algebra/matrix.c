@@ -37,6 +37,17 @@ Matrix matrix_from_array(const double *flat_data, size_t n_rows, size_t n_column
     return matrix;
 }
 
+Matrix transpose(const Matrix *matrix) {
+    Matrix transposed_matrix = create_matrix(matrix->n_columns, matrix->n_rows);
+    for (size_t i = 0; i < transposed_matrix.n_rows; i++) {
+        for (size_t j = 0; j < transposed_matrix.n_columns; j++) {
+            transposed_matrix.data[j * transposed_matrix.n_rows + i] =
+                matrix->data[i * matrix->n_columns + j];
+        }
+    }
+    return transposed_matrix;
+}
+
 int main(void) {
     size_t n_rows = 3;
     size_t n_columns = 3;
@@ -44,9 +55,14 @@ int main(void) {
     const double *flat_data = &data[0][0];
 
     Matrix matrix = matrix_from_array(flat_data, n_rows, n_columns);
+    printf("Matrix:\n");
     print_matrix(&matrix);
+    Matrix transposed_matrix = transpose(&matrix);
+    printf("Transposed Matrix:\n");
+    print_matrix(&transposed_matrix);
 
     free(matrix.data);
+    free(transposed_matrix.data);
 
     return 0;
 }
