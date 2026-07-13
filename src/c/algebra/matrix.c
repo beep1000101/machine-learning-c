@@ -49,8 +49,12 @@ void matrix_destroy(Matrix *matrix) {
 }
 
 Matrix matrix_from_array(const double *flat_data, size_t n_rows, size_t n_columns) {
+    if (flat_data == NULL || n_rows == 0 || n_columns == 0) {
+        return (Matrix){0};
+    }
+
     Matrix matrix = create_matrix(n_rows, n_columns);
-    if (matrix.data == NULL || flat_data == NULL) {
+    if (matrix.data == NULL) {
         return matrix;
     }
 
