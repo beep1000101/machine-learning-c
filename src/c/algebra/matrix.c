@@ -190,15 +190,23 @@ Matrix invert_matrix_naive(const Matrix *matrix) {
 }
 
 Vector multiply_matrix_vector(const Matrix *matrix, const Vector *vector) {
-    double *result = malloc(matrix->n_columns * sizeof(double));
-    for (int i = 0; i < matrix->n_rows; i++) {
-        result[i] = 0.0f;
-        for (int j = 0; j < matrix->n_columns; j++) {
-            result[i] += matrix->data[i * matrix->n_columns + j] * vector->data[j];
+    if (matrix == NULL || vector == NULL || matrix->data == NULL || vector->data == NULL ||
+        matrix->n_columns != vector->size) {
+        return vector_create(0);
+    }
+    Vector result = vector_create(matrix->n_rows);
+    if (result.data == NULL) {
+        return result;
+    }
+
+    for (size_t i = 0; i < matrix->n_rows; i++) {
+        result.data[i] = 0.0;
+        for (size_t j = 0; j < matrix->n_columns; j++) {
+            result.data[i] += matrix->data[i * matrix->n_columns + j] * vector->data[j];
         }
     }
-    Vector result_vector = vector_from_array(result, matrix->n_columns);
-    return result_vector
+
+    return result;
 }
 
 int main(void) {
