@@ -1,3 +1,4 @@
+#include "algebra/vector.h"
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -186,6 +187,18 @@ Matrix invert_matrix_naive(const Matrix *matrix) {
     }
 
     return inverted_matrix;
+}
+
+Vector multiply_matrix_vector(const Matrix *matrix, const Vector *vector) {
+    double *result = malloc(matrix->n_columns * sizeof(double));
+    for (int i = 0; i < matrix->n_rows; i++) {
+        result[i] = 0.0f;
+        for (int j = 0; j < matrix->n_columns; j++) {
+            result[i] += matrix->data[i * matrix->n_columns + j] * vector->data[j];
+        }
+    }
+    Vector result_vector = vector_from_array(result, matrix->n_columns);
+    return result_vector
 }
 
 int main(void) {
