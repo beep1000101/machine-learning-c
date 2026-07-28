@@ -213,6 +213,85 @@ Vector multiply_matrix_vector(const Matrix *matrix, const Vector *vector) {
     return result;
 }
 
+Vector solve_gauss_elimination(const Matrix *matrix, const Vector *vector) {
+    if (matrix == NULL || vector == NULL || matrix->data == NULL || vector->data == NULL ||
+        matrix->n_rows != vector->size || matrix->n_rows != matrix->n_columns) {
+        return vector_create(0);
+    }
+    Vector result = vector_create(matrix->n_rows);
+    for (size_t row = 0; row < vector->size; row++) {
+        result.data[row] = vector->data[row];
+    }
+    if (result.data == NULL) {
+        return result;
+    }
+    // dummy matrix to keep track of gauss elimination algorithm
+    Matrix dummy_matrix = matrix_from_array(matrix->data, matrix->n_rows, matrix->n_columns);
+    if (dummy_matrix.data == NULL) {
+        return vector_create(0);
+    }
+    int *visited = malloc((int)(matrix->n_rows) * sizeof(int));
+    // TUTOR: Either remove visited entirely, or free it on every return path to avoid leaks.
+    // ans: we free it
+    for (int i = 0; i < (int)(matrix->n_rows); i++) {
+        visited[i] = 0;
+    }
+    // iterate over columns
+    for (size_t column = 0; column < matrix->n_columns; column++) {
+        // TUTOR: Pivot step checklist:
+        // TUTOR: 1) Initialize target_row and pivot_found before the row-search loop.
+        // TUTOR: 2) Search from row=column to end using dummy_matrix[..., column].
+        // TUTOR: 3) If no pivot found, free temp allocations and return vector_create(0).
+        // TUTOR: 4) Optional but better: choose max abs pivot (partial pivoting).
+        // seek non-zero element
+        size_t target_row;
+        for (size_t row = 0; row < matrix->n_rows; row++) {
+            if (dummy_matrix.data[row * matrix->n_columns + column] != 0 && visited[row] == 0) {
+                target_row = row;
+                visited[row] = 1;
+                break;
+            }
+            if (row == matrix->n_rows - 1) {
+                matrix_destroy(&dummy_matrix);
+                return vector_create(0);
+            }
+        }
+        // found the candidate, iterate over all rows, other than target
+        for (size_t row = 0; row < matrix->n_rows; row++) {
+            // TUTOR: Decide one method and keep it consistent:
+            // TUTOR: - Forward elimination: update only rows below pivot, then back-substitute.
+            // TUTOR: - Full Gauss-Jordan: update all non-pivot rows and normalize pivots.
+            if (row == target_row) {
+                continue;
+            }
+            // TUTOR: Multiplier should always come from the evolving dummy_matrix values.
+            double multiplier = dummy_matrix.data[row * matrix->n_columns + column] /
+                                dummy_matrix.data[target_row * matrix->n_columns + column];
+            int sign = multiplier > 0 ? 1 : -1;
+            // TUTOR: RHS update must mirror the exact same row operation applied to dummy_matrix.
+            result.data[row] = result.data[row] + sign * multiplier * result.data[target_row];
+            for (size_t inner_column = 0; inner_column < matrix->n_columns; inner_column++) {
+                dummy_matrix.data[row * matrix->n_columns + inner_column] =
+                    dummy_matrix.data[row * matrix->n_columns + inner_column] +
+                    sign * multiplier *
+                        dummy_matrix.data[target_row * matrix->n_columns + inner_column];
+            }
+        }
+        // TUTOR: If you use forward elimination, back-substitution is required for a full solve.
+    }
+    // TUTOR: Diagonal-only normalization is not a complete solve for the forward-elimination path.
+    // TUTOR: Keep this only if you are intentionally doing full Gauss-Jordan style reduction.
+    for (size_t diagonal = 0; diagonal < matrix->n_rows; diagonal++) {
+        result.data[diagonal] =
+            result.data[diagonal] / dummy_matrix.data[diagonal * matrix->n_columns + diagonal];
+    }
+    // TUTOR: free(visited); before return.
+    // ans: done
+    matrix_destroy(&dummy_matrix);
+    free(visited);
+    return result;
+}
+
 int main(void) {
     size_t n_rows = 3;
     size_t n_columns = 3;
@@ -272,6 +351,17 @@ int main(void) {
     matrix_destroy(&matrix_inverted);
     matrix_destroy(&two_by_two_matrix_iverted);
     matrix_destroy(&big_matrix_inverted);
+
+    double elimination_data[2][2] = {{5, -2}, {-2, 1}};
+    const double *elimination_data_flat = &elimination_data[0][0];
+    double elimiation_vector_data[2] = {7, 3};
+    Matrix matrix_elimination = matrix_from_array(elimination_data_flat, 2, 2);
+    Vector vector_elimination = vector_from_array(elimiation_vector_data, 2);
+
+    Vector elimination_result_vector =
+        solve_gauss_elimination(&matrix_elimination, &vector_elimination);
+    print_vector(&elimination_result_vector);
+    matrix_destroy(&matrix_elimination);
 
     return 0;
 }
