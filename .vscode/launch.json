@@ -24,6 +24,34 @@
             "preLaunchTask": "CMake configure + build (debug)",
             "stopAtEntry": false,
             "externalConsole": false
+        },
+        {
+            "name": "Debug Active Python File (.venv)",
+            "type": "debugpy",
+            "request": "launch",
+            "python": "${workspaceFolder}/.venv/bin/python",
+            "program": "${file}",
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+            "env": {
+                "VIRTUAL_ENV": "${workspaceFolder}/.venv",
+                "PATH": "${workspaceFolder}/.venv/bin:${env:PATH}"
+            },
+            "justMyCode": true
+        },
+        {
+            "name": "Debug Regression Data Generator (.venv)",
+            "type": "debugpy",
+            "request": "launch",
+            "python": "${workspaceFolder}/.venv/bin/python",
+            "program": "${workspaceFolder}/tests/python/data/generate_regression_data.py",
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+            "env": {
+                "VIRTUAL_ENV": "${workspaceFolder}/.venv",
+                "PATH": "${workspaceFolder}/.venv/bin:${env:PATH}"
+            },
+            "justMyCode": true
         }
     ]
 }
