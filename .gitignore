@@ -80,3 +80,6 @@ __pycache__/
 # Packaging outputs
 dist/
 *.egg-info/
+
+# additional
+data/
