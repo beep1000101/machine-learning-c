@@ -83,3 +83,7 @@ dist/
 
 # additional
 data/
+
+# Local/private notes (do not commit personal scratch notes)
+notes/private/*
+!notes/private/.gitkeep
