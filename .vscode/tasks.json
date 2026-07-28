@@ -10,9 +10,12 @@
                 "-O0",
                 "-Wall",
                 "-Wextra",
+                "-I${workspaceFolder}/src/c/include",
                 "${file}",
+                "${workspaceFolder}/src/c/algebra/vector.c",
                 "-o",
-                "${fileDirname}/${fileBasenameNoExtension}_dbg"
+                "${fileDirname}/${fileBasenameNoExtension}_dbg",
+                "-lm"
             ],
             "problemMatcher": [
                 "$gcc"

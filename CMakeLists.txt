@@ -9,6 +9,7 @@ add_compile_options(-Wall -Wextra)
 
 add_library(algebra_core
     src/c/algebra/vector.c
+    src/c/algebra/matrix.c
 )
 
 target_include_directories(algebra_core
