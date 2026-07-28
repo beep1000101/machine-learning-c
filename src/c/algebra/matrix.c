@@ -352,11 +352,23 @@ int main(void) {
     matrix_destroy(&two_by_two_matrix_iverted);
     matrix_destroy(&big_matrix_inverted);
 
-    double elimination_data[2][2] = {{5, -2}, {-2, 1}};
+    // double elimination_data[2][2] = {{5, -2}, {-2, 1}};
+    // const double *elimination_data_flat = &elimination_data[0][0];
+    // double elimiation_vector_data[2] = {7, 3};
+    // Matrix matrix_elimination = matrix_from_array(elimination_data_flat, 2, 2);
+    // Vector vector_elimination = vector_from_array(elimiation_vector_data, 2);
+
+    // Vector elimination_result_vector =
+    //     solve_gauss_elimination(&matrix_elimination, &vector_elimination);
+    // print_vector(&elimination_result_vector);
+    // matrix_destroy(&matrix_elimination);
+
+    // next round 3x3 matrix
+    double elimination_data[3][3] = {{1, 1, 1}, {1, 3, 1}, {4, -1, 1}};
     const double *elimination_data_flat = &elimination_data[0][0];
-    double elimiation_vector_data[2] = {7, 3};
-    Matrix matrix_elimination = matrix_from_array(elimination_data_flat, 2, 2);
-    Vector vector_elimination = vector_from_array(elimiation_vector_data, 2);
+    double elimiation_vector_data[3] = {5, 9, -2};
+    Matrix matrix_elimination = matrix_from_array(elimination_data_flat, 3, 3);
+    Vector vector_elimination = vector_from_array(elimiation_vector_data, 3);
 
     Vector elimination_result_vector =
         solve_gauss_elimination(&matrix_elimination, &vector_elimination);
