@@ -4,7 +4,7 @@
 // X.T @ X @ b = X.T @ y
 // b = (X.T @ X)**-1 @ X.T @ y
 
-Vector linear_regression_raw_dogged(const Matrix *design_matrix, const Vector *target_vector) {
+Vector ols_regression_raw_dogged(const Matrix *design_matrix, const Vector *target_vector) {
     Matrix transpose_design_matrix = transpose(&design_matrix);
     Matrix gram_matrix = multiply_matrix_matrix(&transpose_design_matrix, &design_matrix);
     Matrix inverse_gram_matrix = invert_matrix_naive(&gram_matrix);
