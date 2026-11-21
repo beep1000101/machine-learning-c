@@ -11,3 +11,8 @@ add_executable(matrix_example
     matrix_example.c
 )
 target_link_libraries(matrix_example PRIVATE algebra_core)
+
+add_executable(matrix_matrix_multiply_example
+    matrix_matrix_multiply.c
+)
+target_link_libraries(matrix_matrix_multiply_example PRIVATE algebra_core)
