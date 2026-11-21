@@ -18,6 +18,16 @@ target_include_directories(algebra_core
 )
 target_link_libraries(algebra_core PUBLIC m)
 
+add_library(io_core
+    src/c/io/numeric_matrix.c
+)
+target_link_libraries(io_core PUBLIC algebra_core)
+
+add_library(linear_regression_core
+    src/c/ml/linear_regression.c
+)
+target_link_libraries(linear_regression_core PUBLIC algebra_core)
+
 add_subdirectory(examples)
 
 enable_testing()
