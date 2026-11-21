@@ -14,6 +14,8 @@
                 "${file}",
                 "${workspaceFolder}/src/c/algebra/vector.c",
                 "${workspaceFolder}/src/c/algebra/matrix.c",
+                "${workspaceFolder}/src/c/ml/linear_regression.c",
+                "${workspaceFolder}/src/c/io/numeric_matrix.c",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}_dbg",
                 "-lm"
