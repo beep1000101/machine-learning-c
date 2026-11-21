@@ -208,29 +208,29 @@ Vector multiply_matrix_vector(const Matrix *matrix, const Vector *vector) {
 }
 
 Matrix multiply_matrix_matrix(const Matrix *left_matrix, const Matrix *right_matrix) {
-    // The result has one row per left-matrix row and one column per right-matrix column.
-    // Before reading dimensions, check pointers and that left columns == right rows.
+    if (left_matrix == NULL || right_matrix == NULL || left_matrix->data == NULL ||
+        right_matrix->data == NULL || left_matrix->n_rows == 0 || left_matrix->n_columns == 0 ||
+        right_matrix->n_rows == 0 || right_matrix->n_columns == 0 ||
+        left_matrix->n_columns != right_matrix->n_rows) {
+        return (Matrix){0};
+    }
+
     size_t result_matrix_rows = left_matrix->n_rows;
     size_t result_matrix_cols = right_matrix->n_columns;
     Matrix result_matrix = create_matrix(result_matrix_rows, result_matrix_cols);
+    if (result_matrix.data == NULL) {
+        return result_matrix;
+    }
 
     // i is the row of the left matrix and result being computed.
     for (size_t i = 0; i < result_matrix.n_rows; i++) {
         // j is the column of the right matrix and result being computed.
         for (size_t j = 0; j < result_matrix.n_columns; j++) {
-            // dot_index is k: it pairs left element A[i,k] with right element B[k,j].
-            // Add each pair to get result C[i,j].
             double dot_product = 0;
             for (size_t dot_index = 0; dot_index < left_matrix->n_columns; dot_index++) {
-                // data is flat: offset = row * number_of_columns + column.
-                // Thus A[i,k] uses i * left_columns + k;
-                // B[k,j] uses k * right_columns + j.
-                // Compare these offsets with the expressions below: the left currently
-                // adds j to k, and the right currently adds i to k.
                 dot_product += left_matrix->data[i * left_matrix->n_columns + dot_index] *
                                right_matrix->data[dot_index * right_matrix->n_columns + j];
             }
-            // Flat offset for result C[i,j]: i * result_columns + j.
             result_matrix.data[i * result_matrix.n_columns + j] = dot_product;
         }
     }
