@@ -16,3 +16,11 @@ add_executable(matrix_matrix_multiply_example
     matrix_matrix_multiply.c
 )
 target_link_libraries(matrix_matrix_multiply_example PRIVATE algebra_core)
+
+add_executable(ols_regression_example
+    ols_regression_example.c
+)
+target_link_libraries(ols_regression_example PRIVATE linear_regression_core io_core)
+target_compile_definitions(ols_regression_example PRIVATE
+    REGRESSION_DATA_PATH="${PROJECT_SOURCE_DIR}/data/regression_datapoints.txt"
+)
