@@ -26,6 +26,7 @@ double determinant_two_by_two(const Matrix *matrix);
 double matrix_determinant(const Matrix *matrix);
 
 Matrix invert_matrix_naive(const Matrix *matrix);
+Matrix multiply_matrix_matrix(const Matrix *left_matrix, const Matrix *right_matrix);
 
 Vector multiply_matrix_vector(const Matrix *matrix, const Vector *vector);
 Vector solve_gauss_elimination(const Matrix *matrix, const Vector *vector);
