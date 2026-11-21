@@ -1,5 +1,30 @@
 # TODO
 
+## OLS Baseline Tests
+
+Status: Active
+
+Contract:
+
+- Input is whitespace-separated numeric data with a fixed number of values per row.
+- The caller provides the feature count; the final value in each row is the target.
+- The loader returns failure for IO/parse/allocation errors or an incompatible total value count.
+- The loader assumes rows follow the sklearn-generated format; do not add general schema handling yet.
+
+Next actions:
+
+- Add a small loader test that checks feature dimensions and target values.
+- Add a deterministic OLS test that checks known coefficients and prediction error.
+
+Decision note:
+
+- Keep the example's IO path small and reuse the feature/target reader.
+- Defer ragged-row and arbitrary-file diagnostics until non-generated input is supported.
+
+Revisit trigger:
+
+- Add support for hand-authored or externally sourced datasets.
+
 ## API Error Semantics (Pinned)
 
 Status: Deferred (intentionally pinned)
@@ -14,7 +39,7 @@ Current behavior in vector API:
 Why this is deferred:
 
 - It is acceptable and idiomatic for early-stage C libraries.
-- We want to focus on matrix functionality next.
+- The current priority is validating the OLS baseline.
 - We may later need stricter error signaling when API surface grows.
 
 Revisit later options:
@@ -25,7 +50,7 @@ Revisit later options:
 
 Trigger to revisit:
 
-- Start of matrix module stabilization or first external consumer of this API.
+- First external consumer or a need for consistent library-wide diagnostics.
 
 Decision note:
 
