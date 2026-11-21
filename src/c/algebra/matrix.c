@@ -207,6 +207,34 @@ Vector multiply_matrix_vector(const Matrix *matrix, const Vector *vector) {
     return result;
 }
 
+Matrix multiply_matrix_matrix(const Matrix *left_matrix, const Matrix *right_matrix) {
+    // Multiplication requires left columns == right rows; validate that (and pointers)
+    // before reading dimensions or allocating the result.
+    // Each result entry is C[i,j] = sum_k A[i,k] * B[k,j].
+    size_t result_matrix_rows = left_matrix->n_rows;
+    size_t result_matrix_cols = right_matrix->n_columns;
+    Matrix result_matrix = create_matrix(result_matrix_rows, result_matrix_cols);
+
+    // i selects a row from the left matrix and the corresponding result row.
+    for (size_t i = 0; i < result_matrix.n_rows; i++) {
+        // j selects a column from the right matrix and the corresponding result column.
+        for (size_t j = 0; j < result_matrix.n_columns; j++) {
+            // dot_index is k: it walks the shared dimension, pairing A[i,k] with B[k,j].
+            double dot_product = 0;
+            for (size_t dot_index = 0; dot_index < left_matrix->n_columns; dot_index++) {
+                // Row-major offsets should be A[i,k] => i * left_columns + k,
+                // and B[k,j] => k * right_columns + j. The current offsets below
+                // also add j to A's column and i to B's row, so check those indices.
+                dot_product += left_matrix->data[i * left_matrix->n_columns + j + dot_index] *
+                               right_matrix->data[(i + dot_index) * right_matrix->n_columns + j];
+            }
+            // Store the accumulated dot product at C[i,j].
+            result_matrix.data[i * result_matrix.n_columns + j] = dot_product;
+        }
+    }
+    return result_matrix;
+}
+
 Vector solve_gauss_elimination(const Matrix *matrix, const Vector *vector) {
     if (matrix == NULL || vector == NULL || matrix->data == NULL || vector->data == NULL ||
         matrix->n_rows != vector->size || matrix->n_rows != matrix->n_columns) {
